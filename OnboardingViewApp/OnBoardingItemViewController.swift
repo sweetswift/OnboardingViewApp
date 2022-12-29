@@ -11,7 +11,7 @@ class OnBoardingItemViewController: UIViewController {
 
     var mainText = ""
     var subText = ""
-    var topImage = UIImage()
+    var topImage: UIImage? = UIImage()
     
     @IBOutlet private weak var topImageView: UIImageView!
     @IBOutlet private weak var mainTitleLabel: UILabel!
@@ -21,6 +21,8 @@ class OnBoardingItemViewController: UIViewController {
         super.viewDidLoad()
         
         mainTitleLabel.text = mainText
+        descriptionLabel.text = subText
+        topImageView.image = topImage
 
     }
 

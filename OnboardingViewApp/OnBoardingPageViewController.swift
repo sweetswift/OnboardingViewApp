@@ -16,12 +16,18 @@ class OnBoardingPageViewController: UIPageViewController {
         
         let itemVC1 = OnBoardingItemViewController(nibName: "OnBoardingItemViewController", bundle: nil)
         itemVC1.mainText = "첫번째"
+        itemVC1.subText = "앱에대한 설명 첫번째 입니다."
+        itemVC1.topImage = UIImage(named: "sun.min")
         
         let itemVC2 = OnBoardingItemViewController(nibName: "OnBoardingItemViewController", bundle: nil)
         itemVC2.mainText = "두번째"
+        itemVC2.subText = "앱에대한 설명 두번째 입니다."
+        itemVC2.topImage = UIImage(named: "2.circle.fill")
         
         let itemVC3 = OnBoardingItemViewController(nibName: "OnBoardingItemViewController", bundle: nil)
         itemVC3.mainText = "세번째"
+        itemVC3.subText = "앱에대한 설명 세번째 입니다."
+        itemVC3.topImage = UIImage(named: "3.circle.fill")
         
         pages.append(itemVC1)
         pages.append(itemVC2)
