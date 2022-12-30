@@ -10,6 +10,7 @@ import UIKit
 class OnBoardingPageViewController: UIPageViewController {
     
     var pages = [UIViewController]()
+    var bottomButtonMargin: NSLayoutConstraint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +42,7 @@ class OnBoardingPageViewController: UIPageViewController {
         setViewControllers([itemVC1], direction: .forward, animated: true)
         
         self.dataSource = self
+        self.delegate = self
     }
     
     func makeBottomButton() {
@@ -52,14 +54,18 @@ class OnBoardingPageViewController: UIPageViewController {
         
         self.view.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        bottomButtonMargin = button.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
         button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         button.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         button.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        bottomButtonMargin?.isActive = true
+        hideButton()
+        
     }
     
-   @objc func dismissPageVC() {
+    @objc func dismissPageVC() {
         self.dismiss(animated: true)
     }
     
@@ -94,5 +100,40 @@ extension OnBoardingPageViewController: UIPageViewControllerDataSource {
         
     }
     
+    
+}
+
+extension OnBoardingPageViewController: UIPageViewControllerDelegate {
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        
+        guard let currentVC = pageViewController.viewControllers?.first else {
+            return
+        }
+        
+        guard let currentIndex = pages.firstIndex(of: currentVC) else {
+            return
+        }
+        
+        if currentIndex == pages.count - 1 {
+            //버튼보여주기
+            self.showButton()
+        } else {
+            //버튼가리기
+            self.hideButton()
+        }
+        
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func showButton() {
+        bottomButtonMargin?.constant = 0
+    }
+    
+    func hideButton() {
+        bottomButtonMargin?.constant = 100
+    }
     
 }
