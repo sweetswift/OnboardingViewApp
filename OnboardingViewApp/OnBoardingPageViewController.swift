@@ -81,10 +81,25 @@ class OnBoardingPageViewController: UIPageViewController {
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = startIndex
         
-        pageControl.isUserInteractionEnabled = false
+        //pageControl.isUserInteractionEnabled = false
         
         pageControl.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -100).isActive = true
         pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        
+        pageControl.addTarget(self, action: #selector(pageControlTapped), for: .valueChanged)
+    }
+    
+    @objc func pageControlTapped(sender: UIPageControl) {
+        
+        if sender.currentPage > self.currentIndex {
+            self.setViewControllers([pages[sender.currentPage]], direction: .forward, animated: true)
+        }else {
+            self.setViewControllers([pages[sender.currentPage]], direction: .reverse, animated: true)
+        }
+        
+        self.currentIndex = sender.currentPage
+        buttonPresentationStyle()
+       
     }
     
     @objc func dismissPageVC() {
@@ -142,16 +157,20 @@ extension OnBoardingPageViewController: UIPageViewControllerDelegate {
         
         self.currentIndex = currentIndex
         
+        buttonPresentationStyle()
+        
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func buttonPresentationStyle() {
         if currentIndex == pages.count - 1 {
             //버튼보여주기
             self.showButton()
         } else {
             //버튼가리기
             self.hideButton()
-        }
-        
-        UIView.animate(withDuration: 0.5) {
-            self.view.layoutIfNeeded()
         }
     }
     
