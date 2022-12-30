@@ -9,6 +9,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    var didShowOnBoardingView = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -18,10 +20,15 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        let pageVC = OnBoardingPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
-        pageVC.modalPresentationStyle = .fullScreen
+        if didShowOnBoardingView == false {
+            didShowOnBoardingView = true
+            let pageVC = OnBoardingPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+            pageVC.modalPresentationStyle = .fullScreen
+            
+            self.present(pageVC, animated: true)
+        }
         
-        self.present(pageVC, animated: true)
+ 
     }
     
     
