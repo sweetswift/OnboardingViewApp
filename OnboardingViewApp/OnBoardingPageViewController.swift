@@ -14,6 +14,11 @@ class OnBoardingPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.makePageVC()
+        self.makeBottomButton()
+    }
+    
+    func makePageVC() {
         let itemVC1 = OnBoardingItemViewController(nibName: "OnBoardingItemViewController", bundle: nil)
         itemVC1.mainText = "첫번째"
         itemVC1.subText = "앱에대한 설명 첫번째 입니다."
@@ -36,6 +41,26 @@ class OnBoardingPageViewController: UIPageViewController {
         setViewControllers([itemVC1], direction: .forward, animated: true)
         
         self.dataSource = self
+    }
+    
+    func makeBottomButton() {
+        let button = UIButton()
+        button.setTitle("확인", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .systemBlue
+        button.addTarget(self, action: #selector(dismissPageVC), for:.touchUpInside )
+        
+        self.view.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        button.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        button.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
+   @objc func dismissPageVC() {
+        self.dismiss(animated: true)
     }
     
 }
