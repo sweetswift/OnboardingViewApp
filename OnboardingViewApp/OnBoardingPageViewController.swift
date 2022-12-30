@@ -11,12 +11,20 @@ class OnBoardingPageViewController: UIPageViewController {
     
     var pages = [UIViewController]()
     var bottomButtonMargin: NSLayoutConstraint?
+    var pageControl = UIPageControl()
+    let startIndex = 0
+    var currentIndex = 0 {
+        didSet{
+            pageControl.currentPage = currentIndex
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.makePageVC()
         self.makeBottomButton()
+        self.makePageControl()
     }
     
     func makePageVC() {
@@ -65,6 +73,20 @@ class OnBoardingPageViewController: UIPageViewController {
         
     }
     
+    func makePageControl() {
+        self.view.addSubview(pageControl)
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.currentPageIndicatorTintColor = .black
+        pageControl.pageIndicatorTintColor = .lightGray
+        pageControl.numberOfPages = pages.count
+        pageControl.currentPage = startIndex
+        
+        pageControl.isUserInteractionEnabled = false
+        
+        pageControl.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -100).isActive = true
+        pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+    }
+    
     @objc func dismissPageVC() {
         self.dismiss(animated: true)
     }
@@ -89,13 +111,15 @@ extension OnBoardingPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         
-        guard let curretIndex = pages.firstIndex(of: viewController) else {
+        guard let currentIndex = pages.firstIndex(of: viewController) else {
             return nil
         }
-        if curretIndex == pages.count - 1 {
+        self.currentIndex = currentIndex
+        
+        if currentIndex == pages.count - 1 {
             return pages.first
         }else {
-            return pages[curretIndex + 1]
+            return pages[currentIndex + 1]
         }
         
     }
@@ -110,10 +134,13 @@ extension OnBoardingPageViewController: UIPageViewControllerDelegate {
         guard let currentVC = pageViewController.viewControllers?.first else {
             return
         }
+       
         
         guard let currentIndex = pages.firstIndex(of: currentVC) else {
             return
         }
+        
+        self.currentIndex = currentIndex
         
         if currentIndex == pages.count - 1 {
             //버튼보여주기
